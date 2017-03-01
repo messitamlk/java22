@@ -1,0 +1,5 @@
+package AbstractGraph;
+
+public class Graph {
+
+}

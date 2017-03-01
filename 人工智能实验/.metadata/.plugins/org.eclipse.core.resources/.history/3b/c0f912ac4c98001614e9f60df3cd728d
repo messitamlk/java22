@@ -1,0 +1,149 @@
+package AbstractGraph;
+import java.util.*;
+public abstract class AbstractGraph<V> implements Graph<V>{
+	protected  List<V> vertices;//Store vertices
+	protected List<List<Integer>>neighbors;// Adjacency lists
+	
+	/**Construct a graph from edges and vertices stored in arrays*/
+	protected AbstractGraph(int [][]edges,V[]vertices){
+		this.vertices = new ArrayList<V>();
+		for (int i=0;i<vertices.length;i++)
+			this.vertices.add(vertices[i]);
+		createAdjacencyLists(edges,vertices.length);
+		
+	}
+	/**Construct a graph from edges and vertices stored in List*/
+	protected AbstractGraph(List<Edge> edges,List<V>vertices){
+		this.vertices = vertices;
+		createAdjacencyLists(edges,vertices.size());
+		
+	}
+	/**Construct a graph from edges and vertices 0,1,2 and edge list*/
+	protected AbstractGraph(List <Edge>edges,int numberOfVertices){
+		vertices = new ArrayList<V>();//Create vertices
+		for (int i=0;i<numberOfVertices;i++)
+			vertices.add((V)(new Integer(i)));//vertices is {0,1,2,....}
+		createAdjacencyLists(edges, numberOfVertices);
+		
+	}
+	/**Construct a graph from edges and vertices 0,1,and edge array*/
+	protected AbstractGraph(int [][]edges,int numberOfVertices){
+		vertices = new ArrayList<V>();//Create vertices
+		for (int i=0;i<numberOfVertices;i++)
+			vertices.add((V)(new Integer(i)));//vertices is {0,1,....}
+		createAdjacencyLists(edges, numberOfVertices);
+		
+	}
+	/**Create adjacency lists for each vertex*/
+	private void createAdjacencyLists(
+			int [][]edges,int numberOfVertices){
+		//create a linked list
+		neighbors = new ArrayList<List<Integer>>();
+		for (int i=0;i<numberOfVertices;i++)
+		{neighbors.add(new ArrayList<Integer>());
+		}
+		for (int i=0;i<edges.length;i++){
+			int u = edges[i][0];
+			int v = edges[i][1];
+			neighbors.get(u).add(v);
+		}
+		
+	}
+	
+	/**Create adjacency lists for each vertex*/
+	private void createAdjacencyLists(
+			List<Edge> edges,int numberOfVertices){
+		//create a linked list
+		neighbors = new ArrayList<List<Integer>>();
+		for (int i=0;i<numberOfVertices;i++)
+		{
+			neighbors.add(new ArrayList<Integer>());
+		}
+		for (Edge edge:edges){
+			neighbors.get(edge.u).add(edge.v);
+		}
+		
+	}
+	
+	/**Return the number of vertices in the graph*/
+	public int getSize(){
+		return vertices.size();
+	}
+	
+	/** Return the vertices in the graph*/
+	public List<V> getVertice(){
+		return vertices;
+	}
+	
+	/**Return the object for the specified vertex*/
+	public V getVertex(int index){
+		return vertices.get(index);
+		
+	}
+	/**Return the index for the specified vertex object */
+	public int getIndex(V v){
+		return vertices.indexOf(v);
+	}
+	
+	/**Return the neighbors of vertex with the specified index*/
+	public List<Integer> getNeighbors(int index){
+		return neighbors.get(index);
+	}
+	
+	/**Return the degree for a specified vertex*/
+	public int getDegree(int v){
+		return neighbors.get(v).size();
+	}
+	/**Return the adjacency matrix*/
+	public int [][] getAdjacencyMatrix(){
+		int [][]adjacencyMatrix = new int [getSize()][getSize()];
+		for(int i =0;i<neighbors.size();i++){
+			for(int j=0;j<neighbors.get(i).size();j++)
+			{
+				int v =neighbors.get(i).get(j);
+				adjacencyMatrix [i][v]= 1;
+			}
+		}
+		return adjacencyMatrix ;
+	}
+	
+	/**print the adjacency matrix*/
+	public void printAdjacencyMatrix(){
+		int [][]adjacencyMatrix = getAdjacencyMatrix();
+		for(int i =0;i<adjacencyMatrix.length;i++){
+			for(int j=0;j<adjacencyMatrix[0].length;j++){
+				System.out.print(adjacencyMatrix[i][j] + " ");
+			}
+			System.out.println();
+				}
+		
+	}
+	
+	/**print the edges */
+	public void printEdges(){
+		for(int u=0;u<neighbors.size();u++){
+			System.out.print("Vertex "+u+": ");
+			for(int j =0;j<neighbors.get(u).size();j++){
+				System.out.print("("+u+", "+neighbors.get(u).get(j)+") ");
+			}
+			System.out.println();
+		}
+	}
+	
+	/**Edges inner class inside the AbstreactGraph class*/
+	public static class Edge {
+		public int u;//Starting vertex of the edge
+		public int v;//Ending vertex of the edge
+		/**Construct an edge for (u,v)*/
+		public Edge (int u,int v){
+			this.u=u;
+			this.v= v;
+		}
+	}
+	/**obtain a dfs  tree starting form vertex v*/
+	public Tree dfs(int v){
+		
+	}
+	
+	
+}
